@@ -40,7 +40,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', ['post'=> $post]);
     }
 
     /**
@@ -48,7 +48,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', ['post'=> $post]);
     }
 
     /**
@@ -56,7 +56,10 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->all();
+        $data['user_id'] = 1;
+        $post->update($data);
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -64,6 +67,21 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        $posts = Post::all();
+      return view('posts.index', ['posts' => $posts]);
     }
+
+     
+
+
+public function addcomment(Request $request)
+{
+    \Log::debug($request);
+    $comment = Comment::create($request->all);
+    // $post->comment
+    return redirect()->route('post.show', $post);
+}
+
+
 }
